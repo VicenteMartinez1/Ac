@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Definitivo: Teoría de Circuitos (80 Preguntas)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            color: #800000;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            height: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background-color: #800000;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .progress-text {
+            text-align: right;
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .question-text {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #212529;
+        }
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button.true {
+            background-color: #28a745;
+            color: white;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
+        }
+        button.false {
+            background-color: #dc3545;
+            color: white;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        .next-btn {
+            background-color: #800000;
+            color: white;
+            width: 100%;
+            margin-top: 25px;
+            display: none;
+            box-shadow: 0 4px 6px rgba(128, 0, 0, 0.3);
+        }
+        .score-panel {
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .score-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #800000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Examen Final: Análisis de Circuitos (Masterclass)</h1>
+    <div class="subtitle">80 Preguntas: DC, AC, Laplace, Fourier, Op-Amps y Cuadripolos</div>
+    
+    <div id="quiz-section">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-text" id="progress-text">Pregunta 1 de 80</div>
+        
+        <div class="question-container">
+            <div class="question-text" id="question-text">Cargando pregunta...</div>
+            <div class="btn-group" id="answer-buttons">
+                <button class="true" onclick="checkAnswer(true)">Verdadero</button>
+                <button class="false" onclick="checkAnswer(false)">Falso</button>
+            </div>
+        </div>
+        <div class="feedback" id="feedback-box"></div>
+        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Siguiente Pregunta</button>
+    </div>
+
+    <div class="score-panel" id="score-section">
+        <h2>Simulación Finalizada</h2>
+        <div class="score-value" id="final-score"></div>
+        <div id="final-message" style="font-size: 1.2em; line-height: 1.5;"></div>
+        <button onclick="location.reload()" style="background-color: #800000; color: white; margin-top: 30px; padding: 15px;">Repetir Examen Completo</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // --- SECCIÓN 1: FUNDAMENTOS Y TEOREMAS EN DC ---
+        { text: "1. Las Leyes de Kirchhoff (LVK y LCK) son aplicables únicamente a circuitos lineales y no pueden usarse si el circuito contiene diodos o transistores.", answer: false, explanation: "FALSO. Las leyes de Kirchhoff se basan en la conservación de la energía y la carga. Son válidas en cualquier circuito concentrado, sea lineal, no lineal, pasivo o activo." },
+        { text: "2. Al aplicar el principio de superposición, las fuentes de voltaje independientes se reemplazan por cortocircuitos y las fuentes de corriente independientes por circuitos abiertos.", answer: true, explanation: "VERDADERO. Para apagar una fuente, su valor debe ser cero. V=0 es un cortocircuito. I=0 es un circuito abierto." },
+        { text: "3. En el teorema de superposición, las fuentes dependientes también deben apagarse (hacerse cero) individualmente al igual que las fuentes independientes.", answer: false, explanation: "FALSO. Las fuentes dependientes NUNCA se apagan al aplicar superposición, ya que su valor depende de una variable del circuito que está cambiando en cada sub-análisis." },
+        { text: "4. Se requiere definir un 'Supernodo' cuando una fuente de voltaje (dependiente o independiente) se encuentra conectada entre dos nodos de no-referencia.", answer: true, explanation: "VERDADERO. Al no conocer la corriente que atraviesa la fuente de voltaje, LCK no se puede aplicar a los nodos individuales de forma directa." },
+        { text: "5. Para hallar la resistencia de Thévenin (Rth) en un circuito que contiene fuentes dependientes, basta con apagar todas las fuentes y reducir el circuito mediante combinaciones serie-paralelo.", answer: false, explanation: "FALSO. Si hay fuentes dependientes, no se puede reducir usando serie/paralelo. Se debe usar el método de voltaje o corriente de prueba inyectada." },
+        { text: "6. En DC, la máxima transferencia de potencia a una carga (RL) ocurre cuando RL es igual a la resistencia de Thévenin (Rth) vista desde los terminales.", answer: true, explanation: "VERDADERO. Se demuestra derivando la ecuación de potencia P respecto a RL e igualando a cero." },
+        { text: "7. Un voltímetro ideal tiene una resistencia interna de cero ohmios para no afectar la medición.", answer: false, explanation: "FALSO. Un voltímetro se conecta en paralelo, por lo que su resistencia ideal debe ser INFINITA." },
+        { text: "8. El equivalente de Norton consiste en una fuente de corriente en paralelo con la resistencia de Thévenin.", answer: true, explanation: "VERDADERO. Rn es igual a Rth, y la fuente In es igual a Vth/Rth." },
+        { text: "9. Un divisor de voltaje solo puede aplicarse estrictamente a resistencias que se encuentran conectadas en serie y atravesadas por la misma corriente.", answer: true, explanation: "VERDADERO. Si hay un nodo intermedio por donde escapa corriente, la ecuación del divisor deja de ser válida." },
+        { text: "10. La conductancia equivalente de tres conductancias en paralelo se calcula sumando sus inversos.", answer: false, explanation: "FALSO. Las conductancias en paralelo se suman directamente: G_eq = G1 + G2 + G3." },
+
+        // --- SECCIÓN 2: CAPACITORES, INDUCTORES Y TRANSITORIOS ---
+        { text: "11. En condiciones de estado estacionario de DC, un capacitor ideal actúa como un circuito abierto y un inductor ideal como un cortocircuito.", answer: true, explanation: "VERDADERO. Como dV/dt = 0 y di/dt = 0 en DC, I_cap = 0 (abierto) y V_ind = 0 (corto)." },
+        { text: "12. La energía almacenada en un capacitor está dada por W = 1/2 * C * V^2.", answer: true, explanation: "VERDADERO. Esta es la fórmula fundamental de energía estática para un capacitor." },
+        { text: "13. El voltaje en las terminales de un inductor no puede cambiar instantáneamente.", answer: false, explanation: "FALSO. Lo que no puede cambiar instantáneamente en un inductor es la CORRIENTE, no el voltaje." },
+        { text: "14. La constante de tiempo (tau) de un circuito RL de primer orden se calcula como L * R.", answer: false, explanation: "FALSO. Para un circuito RL, la constante de tiempo es tau = L / R." },
+        { text: "15. Después de 5 constantes de tiempo (5 tau), se considera que el transitorio ha concluido.", answer: true, explanation: "VERDADERO. A los 5 tau, la respuesta exponencial ha decaído a menos del 1%." },
+        { text: "16. En un circuito RLC serie sin fuentes, si la resistencia es cero, el circuito oscilará indefinidamente.", answer: true, explanation: "VERDADERO. Sin resistencia, no hay disipación de energía (amortiguamiento nulo)." },
+        { text: "17. Un circuito RLC serie se considera 'sobreamortiguado' cuando las raíces de su ecuación característica son reales e iguales.", answer: false, explanation: "FALSO. Si las raíces son reales e iguales, es 'críticamente amortiguado'." },
+        { text: "18. En la respuesta escalón de un circuito RC, el valor inicial del capacitor Vc(0) siempre se asume como 0 V.", answer: false, explanation: "FALSO. Vc(0) depende de la historia del circuito antes de t=0 y debe calcularse." },
+        { text: "19. Al conectar dos capacitores de 10 uF en serie, la capacitancia equivalente es de 20 uF.", answer: false, explanation: "FALSO. Los capacitores en serie se calculan como las resistencias en paralelo. El resultado es 5 uF." },
+        { text: "20. La derivada de la corriente respecto al tiempo (di/dt) en un circuito RLC en t=0+ se encuentra usando la LVK en t=0+.", answer: true, explanation: "VERDADERO. Al conocer los voltajes iniciales en C y R, por LVK hallamos el voltaje en L, y de ahí v_L = L(di/dt)." },
+
+        // --- SECCIÓN 3: AC, FASORES E IMPEDANCIA ---
+        { text: "21. El dominio fasorial convierte ecuaciones diferenciales en ecuaciones algebraicas complejas.", answer: true, explanation: "VERDADERO. Esta es la gran ventaja de los fasores en el análisis en estado estable." },
+        { text: "22. La reactancia inductiva (X_L) disminuye a medida que la frecuencia de la fuente AC aumenta.", answer: false, explanation: "FALSO. X_L = wL. Si la frecuencia aumenta, la reactancia inductiva aumenta." },
+        { text: "23. La reactancia capacitiva se define como X_C = -1/(wC), siendo un número real negativo.", answer: true, explanation: "VERDADERO. Por convención, la impedancia es -j/(wC), por lo que su reactancia (parte imaginaria) es negativa." },
+        { text: "24. El ángulo de fase de la impedancia de un inductor ideal siempre es de +90 grados.", answer: true, explanation: "VERDADERO. Z_L = jwL. En polar, 'j' representa un ángulo de 90°." },
+        { text: "25. La admitancia (Y) se compone de Conductancia (G) y Susceptancia (B).", answer: true, explanation: "VERDADERO. Y = G + jB." },
+        { text: "26. Para sumar v1(t) = 10 cos(wt) y v2(t) = 10 sen(wt), la amplitud resultante es 20.", answer: false, explanation: "FALSO. Deben sumarse como fasores. El resultado es una magnitud de 10√2 = 14.14." },
+        { text: "27. Al calcular divisores de corriente en AC, la impedancia se utiliza igual que la resistencia en DC.", answer: true, explanation: "VERDADERO. Las fórmulas topológicas se mantienen idénticas, solo usando números complejos." },
+        { text: "28. El valor RMS es el valor DC equivalente que entregaría la misma potencia promedio.", answer: true, explanation: "VERDADERO. Es la definición térmica/física del RMS." },
+        { text: "29. El valor RMS de una onda triangular de amplitud Vp es Vp / √2.", answer: false, explanation: "FALSO. Vp / √2 es solo para senoides. Para triangulares es Vp / √3." },
+        { text: "30. En un circuito AC lineal, las frecuencias de la entrada y la respuesta son exactamente las mismas.", answer: true, explanation: "VERDADERO. Los sistemas lineales no crean nuevas frecuencias." },
+
+        // --- SECCIÓN 4: POTENCIA EN AC Y FACTOR DE POTENCIA ---
+        { text: "31. La potencia promedio (activa) consumida por un capacitor ideal es cero.", answer: true, explanation: "VERDADERO. Al estar el voltaje y la corriente desfasados 90°, el producto promedio es cero." },
+        { text: "32. La Potencia Aparente (S) es la suma algebraica de P y Q.", answer: false, explanation: "FALSO. Es la suma VECTORIAL. S = √(P^2 + Q^2)." },
+        { text: "33. La potencia compleja se calcula como S = V * I* (conjugado de la corriente).", answer: true, explanation: "VERDADERO. Se usa el conjugado para obtener el desfase real de la impedancia." },
+        { text: "34. Un Factor de Potencia (FP) en 'retraso' indica un comportamiento capacitivo.", answer: false, explanation: "FALSO. FP en retraso significa corriente retrasada, típico de inductores." },
+        { text: "35. Corregir el factor de potencia a 1 reduce la potencia real (Watts) consumida por la carga.", answer: false, explanation: "FALSO. Reduce la potencia reactiva, pero los Watts requeridos por la máquina siguen siendo los mismos." },
+        { text: "36. Para máxima transferencia de potencia activa en AC, ZL debe ser el complejo conjugado de Zth.", answer: true, explanation: "VERDADERO. Z_L = R_th - jX_th cancela reactancias y maximiza potencia." },
+        { text: "37. El Teorema de Tellegen sobre potencias no aplica si hay transformadores acoplados.", answer: false, explanation: "FALSO. Aplica a cualquier red que cumpla las leyes de Kirchhoff." },
+        { text: "38. Si la potencia reactiva Q es negativa, el elemento es predominantemente capacitivo.", answer: true, explanation: "VERDADERO. Los capacitores generan VARs capacitivos, representados con signo negativo." },
+        { text: "39. La potencia instantánea en un circuito AC monofásico pulsa al doble de la frecuencia de la fuente.", answer: true, explanation: "VERDADERO. Matemáticamente se genera un término cos(2wt)." },
+        { text: "40. Si se usan valores RMS, la potencia compleja es S = (1/2) * V_rms * I_rms*.", answer: false, explanation: "FALSO. Con valores RMS desaparece el (1/2). S = V_rms * I_rms*." },
+
+        // --- SECCIÓN 5: RESONANCIA Y TRIFÁSICA ---
+        { text: "41. En un circuito RLC serie en resonancia, la impedancia es mínima y puramente resistiva.", answer: true, explanation: "VERDADERO. Las reactancias se cancelan." },
+        { text: "42. En un circuito RLC paralelo resonante, la impedancia total equivalente tiende a cero.", answer: false, explanation: "FALSO. La admitancia es mínima, por ende, la impedancia tiende al MÁXIMO." },
+        { text: "43. Un Factor de Calidad (Q) alto indica un ancho de banda más estrecho y selectivo.", answer: true, explanation: "VERDADERO. BW = w_0 / Q. Mayor Q, menor BW." },
+        { text: "44. En las frecuencias de corte de un filtro, la magnitud del voltaje cae al 50%.", answer: false, explanation: "FALSO. Cae al 70.7% (1/√2). Es la potencia la que cae al 50%." },
+        { text: "45. En un sistema trifásico en Estrella (Y), el voltaje de línea es √3 veces el de fase.", answer: true, explanation: "VERDADERO. V_L = √3 * V_f." },
+        { text: "46. En un sistema trifásico en Delta (Δ), la corriente de línea es igual a la de fase.", answer: false, explanation: "FALSO. En Delta, I_L = √3 * I_f." },
+        { text: "47. La potencia activa trifásica total depende de fórmulas distintas si es estrella o delta.", answer: false, explanation: "FALSO. P_total = √3 * V_L * I_L * cos(theta) aplica a ambas topologías balanceadas." },
+        { text: "48. El cable neutro en un sistema trifásico balanceado transporta la suma algebraica de las corrientes de fase.", answer: false, explanation: "FALSO. Es la suma vectorial, la cual da exactamente CERO." },
+        { text: "49. En un transformador ideal, la relación de voltajes es proporcional a la relación de vueltas (N1/N2).", answer: true, explanation: "VERDADERO. V1/V2 = N1/N2." },
+        { text: "50. Un transformador aísla galvánicamente, bloqueando el paso de señales en AC pero permitiendo DC.", answer: false, explanation: "FALSO. Bloquea la DC y permite la inducción de AC." },
+
+        // --- SECCIÓN 6: OP-AMPS, ACOPLAMIENTO Y AVANZADOS ---
+        { text: "51. El 'cortocircuito virtual' significa que fluye corriente libremente entre las entradas del Op-Amp ideal.", answer: false, explanation: "FALSO. V+ = V-, pero la corriente de entrada es CERO." },
+        { text: "52. Un circuito integrador con Op-Amp ideal se saturará si se le aplica un DC constante.", answer: true, explanation: "VERDADERO. Integrar DC genera una rampa hacia el infinito (hasta que satura con Vcc)." },
+        { text: "53. Un CMRR infinito significa que el Op-Amp ignora el ruido común en ambas entradas.", answer: true, explanation: "VERDADERO. Amplifica solo la diferencia." },
+        { text: "54. Según la convención del punto, si dos corrientes entran por los puntos, sus flujos se oponen.", answer: false, explanation: "FALSO. Si ambas entran por los puntos, se suman (son aditivos)." },
+        { text: "55. El coeficiente de acoplamiento (k) puede tomar cualquier valor positivo.", answer: false, explanation: "FALSO. k siempre está estrictamente entre 0 y 1." },
+        { text: "56. La impedancia reflejada en un transformador lineal se suma positivamente al primario.", answer: true, explanation: "VERDADERO. Z_ref = (wM)^2 / Z_22, siempre aporta una resistencia positiva disipativa." },
+        { text: "57. En Laplace, el voltaje inicial V0 de un capacitor se modela como una fuente V0/s.", answer: true, explanation: "VERDADERO. Es la transformada de la condición inicial de voltaje." },
+        { text: "58. La transformada de Laplace no aplica para circuitos con señales senoidales.", answer: false, explanation: "FALSO. Sustituyendo s = jw se obtiene el análisis de AC clásico." },
+        { text: "59. El Teorema del Valor Final se puede usar aunque el circuito sea inestable.", answer: false, explanation: "FALSO. Requiere que todos los polos estén en el semiplano izquierdo." },
+        { text: "60. En un Bode de magnitud, un integrador (1/s) tiene una pendiente constante de -20 dB/década.", answer: true, explanation: "VERDADERO. Es una recta de caída constante." },
+        { text: "61. En la frecuencia de corte de un filtro RC, el desfase es de -90 grados.", answer: false, explanation: "FALSO. El desfase es de -45 grados. Llega a -90 en infinito." },
+        { text: "62. Los dB de potencia usan 20*log(P2/P1).", answer: false, explanation: "FALSO. Potencia usa 10*log. Voltaje usa 20*log." },
+        { text: "63. En una red pasiva recíproca de dos puertos, los parámetros Z cumplen Z12 = Z21.", answer: true, explanation: "VERDADERO. Es la definición matricial de reciprocidad." },
+        { text: "64. Al conectar redes en cascada, las matrices Z se suman.", answer: false, explanation: "FALSO. Para cascada se MULTIPLICAN las matrices de transmisión ABCD." },
+        { text: "65. Los parámetros Y asumen cortocircuito en los puertos para sus pruebas.", answer: true, explanation: "VERDADERO. Por eso se llaman admitancias de cortocircuito." },
+        { text: "66. Si a un circuito se le inyecta una onda cuadrada, su salida tendrá armónicos de la cuadrada.", answer: true, explanation: "VERDADERO. La salida es superposición de las frecuencias de la entrada (Series de Fourier)." },
+        { text: "67. Un filtro paso bajo RC atenúa más el 3er armónico que el fundamental.", answer: true, explanation: "VERDADERO. A mayor frecuencia, mayor atenuación en paso bajo." },
+        { text: "68. El valor RMS total de una serie de Fourier se calcula sumando linealmente los RMS individuales.", answer: false, explanation: "FALSO. Se suman sus CUADRADOS y se saca raíz (Teorema de Parseval)." },
+        { text: "69. En un RLC resonante, la energía total almacenada se mantiene constante.", answer: true, explanation: "VERDADERO. Oscila idealmente entre C y L sin demandar energía reactiva a la fuente." },
+        { text: "70. La reactancia (X) determina si un elemento consume Watts (Potencia activa).", answer: false, explanation: "FALSO. La reactancia controla VARs. La Resistencia (R) controla Watts." },
+
+        // --- SECCIÓN 7: NIVEL MASTER (10 PREGUNTAS FINALES) ---
+        { text: "71. El 'Slew Rate' de un Op-Amp define su respuesta máxima lineal en frecuencia ante señales pequeñas, sin importar la amplitud.", answer: false, explanation: "FALSO. El Slew Rate (V/us) limita la tasa de cambio MÁXIMA de salida. A mayor amplitud de la señal, la distorsión por Slew Rate aparece a frecuencias más bajas." },
+        { text: "72. Un puente rectificador de onda completa alimentado por una fuente de AC, transfiere potencia a una carga DC, pero desde la red eléctrica, la corriente consumida deja de ser senoidal.", answer: true, explanation: "VERDADERO. Los diodos introducen severas no-linealidades, generando fuertes corrientes armónicas (THD alto) en la red eléctrica, aunque la carga sea una simple resistencia." },
+        { text: "73. Para lograr acoplar una bocina de 8 Ohms a un amplificador de 800 Ohms, el transformador ideal requerido debe tener una relación de vueltas de N1/N2 = 10.", answer: true, explanation: "VERDADERO. Z1/Z2 = (N1/N2)^2. Por ende, 800/8 = 100. La raíz de 100 es 10." },
+        { text: "74. El teorema del valor inicial de Laplace estipula que f(0+) = límite de s*F(s) cuando s tiende a cero.", answer: false, explanation: "FALSO. Para el valor INICIAL, 's' debe tender a INFINITO. El límite de s->0 es para el valor FINAL." },
+        { text: "75. Un filtro activo Sallen-Key de 2do orden permite alcanzar un factor de calidad (Q) mayor que 0.5 utilizando solo resistores y capacitores, sin usar inductores.", answer: true, explanation: "VERDADERO. Esa es la magia de los filtros activos. El Op-Amp inyecta energía al circuito, simulando comportamientos resonantes sin la necesidad de componentes magnéticos voluminosos." },
+        { text: "76. Un motor síncrono en vacío, sobreexcitado, actúa en la red eléctrica dibujando corriente adelantada, por lo que puede usarse físicamente como si fuera un banco de capacitores.", answer: true, explanation: "VERDADERO. A esto se le llama 'Condensador Síncrono'. Modificando la corriente de excitación DC del rotor, la máquina genera potencia reactiva capacitiva hacia la red." },
+        { text: "77. Si en un problema de máxima transferencia de potencia en AC la carga es puramente resistiva (no podemos agregar capacitores o inductores), la resistencia RL óptima debe ser igual a la magnitud de Zth (RL = |Zth|).", answer: true, explanation: "VERDADERO. Si RL no puede cancelar la reactancia de Thevenin, el cálculo matemático demuestra que la transferencia se maximiza cuando RL iguala a la magnitud total de Zth." },
+        { text: "78. La respuesta transitoria de un circuito RLC críticamente amortiguado consiste en un término exponencial puro sin términos multiplicados por el tiempo (t).", answer: false, explanation: "FALSO. Cuando las raíces son repetidas (amortiguamiento crítico), la solución general es y(t) = (A1 + A2*t)*e^(-alfa*t). El término 't' es esencial matemáticamente para evitar dependencia lineal." },
+        { text: "79. Si una forma de onda periódica presenta simetría impar ( f(t) = -f(-t) ), su serie de Fourier solo contendrá términos de cosenos.", answer: false, explanation: "FALSO. Las funciones impares solo contienen términos de SENOS, además de tener un valor promedio (DC) igual a cero. Los cosenos son propios de funciones con simetría PAR." },
+        { text: "80. En el análisis nodal con fasores, si la matriz de admitancias [Y] es asimétrica respecto a su diagonal principal, es un indicio absoluto de que el circuito contiene fuentes dependientes u op-amps.", answer: true, explanation: "VERDADERO. Un circuito compuesto únicamente por componentes pasivos (R, L, C y acoplamientos mutuos) es recíproco, lo que siempre produce una matriz [Y] perfectamente simétrica." }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionText = document.getElementById('question-text');
+    const answerButtons = document.getElementById('answer-buttons');
+    const feedbackBox = document.getElementById('feedback-box');
+    const nextBtn = document.getElementById('next-btn');
+    const progressText = document.getElementById('progress-text');
+    const progressFill = document.getElementById('progress-fill');
+    const quizSection = document.getElementById('quiz-section');
+    const scoreSection = document.getElementById('score-section');
+
+    function loadQuestion() {
+        feedbackBox.style.display = 'none';
+        nextBtn.style.display = 'none';
+        answerButtons.style.display = 'flex';
+        
+        const progressPercentage = ((currentQuestion) / questions.length) * 100;
+        progressFill.style.width = `${progressPercentage}%`;
+        progressText.innerText = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
+        
+        questionText.innerText = questions[currentQuestion].text;
+    }
+
+    function checkAnswer(userAnswer) {
+        answerButtons.style.display = 'none';
+        const isCorrect = userAnswer === questions[currentQuestion].answer;
+        
+        feedbackBox.style.display = 'block';
+        if (isCorrect) {
+            score++;
+            feedbackBox.className = 'feedback correct';
+            feedbackBox.innerHTML = `<strong>¡Excelente! Respuesta correcta.</strong><br><br>${questions[currentQuestion].explanation}`;
+        } else {
+            feedbackBox.className = 'feedback incorrect';
+            feedbackBox.innerHTML = `<strong>Error de concepto.</strong><br><br>${questions[currentQuestion].explanation}`;
+        }
+
+        nextBtn.style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            showScore();
+        }
+    }
+
+    function showScore() {
+        quizSection.style.display = 'none';
+        scoreSection.style.display = 'flex';
+        
+        document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+        
+        let msg = "";
+        const percentage = (score / questions.length) * 100;
+        
+        if (percentage >= 90) {
+            msg = "¡INGENIERO DE ÉLITE! Tienes un dominio absoluto de la teoría electromagnética y de redes. Estás sobradamente preparado para destrozar ese parcial.";
+        } else if (percentage >= 70) {
+            msg = "Aprobado firme. Comprendes muy bien los fenómenos físicos. Repasa los errores puntuales (usualmente temas de Laplace o Fourier) y asegurarás la nota máxima.";
+        } else if (percentage >= 50) {
+            msg = "Conceptos cruzados. Tienes las bases, pero la combinación de matemáticas complejas con la física te está generando dudas. ¡A revisar los libros guía (Sedra, Hayt)!";
+        } else {
+            msg = "Alarma roja. Detén todo. Necesitas repasar a fondo desde las definiciones de fasores y superposición antes de entrar al parcial. No te desanimes, el análisis de circuitos es de sentarse a practicar.";
+        }
+        document.getElementById('final-message').innerText = msg;
+    }
+
+    // Inicializar el juego
+    loadQuestion();
+</script>
+
+</body>
+</html>
